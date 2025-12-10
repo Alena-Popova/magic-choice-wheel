@@ -1,0 +1,5 @@
+# Project settings
+.idea
+.idea/*
+*.iml
+.DS_Store
