@@ -1,0 +1,82 @@
+{
+  "content": {
+    "pageTitle": "Учебная Рулетка",
+    "title": "study session",
+    "subtitle": "who answers next",
+    "spinButtonLabel": "start",
+    "emptyStateTitle": "🎓 ВСЕ ОТВЕТИЛИ 🎓"
+  },
+  "theme": {
+    "background": "#f6f5ef",
+    "primaryLight": "#5c7cfa",
+    "primary": "#5c7cfa",
+    "primaryDark": "#364fc7",
+    "textLight": "#ffffff",
+    "textDark": "#495057",
+    "textShell": "#264653",
+    "grayShell": "#264653",
+    "accentLight": "#2a9d8f",
+    "accentDark": "#1d3557",
+    "wheelOpacity": 0.92,
+    "wheelSectorColors": [
+      "#d8f3dc",
+      "#ffe8cc",
+      "#e0e7ff",
+      "#fff3bf",
+      "#d0ebff",
+      "#f3d9fa"
+    ],
+    "winnerFireworkColors": [
+      "#95d5b2",
+      "#74c69d",
+      "#ffd166",
+      "#90e0ef",
+      "#cdb4db",
+      "#ffffff"
+    ],
+    "buttonFireworkColors": [
+      "#2a9d8f",
+      "#e9c46a",
+      "#f4a261",
+      "#5c7cfa"
+    ]
+  },
+  "assets": {
+    "arrowIcon": "./assets/book-club/shell-arrow.svg",
+    "wheelBackgroundImage": "./assets/study-session/wheel-background-image.svg",
+    "sideIcons": []
+  },
+  "participants": [
+    {
+      "name": "Анна",
+      "icon": "🧠"
+    },
+    {
+      "name": "Егор",
+      "icon": "✏️"
+    },
+    {
+      "name": "Лиза",
+      "icon": "📐"
+    },
+    {
+      "name": "Максим",
+      "icon": "🔬"
+    },
+    {
+      "name": "София",
+      "icon": "📝"
+    },
+    {
+      "name": "Илья",
+      "icon": "🎯"
+    }
+  ],
+  "behavior": {
+    "fullSpins": 5,
+    "spinDurationMs": 4500,
+    "mobileSpinDurationMs": 2800,
+    "winnerModalDurationMs": 6500,
+    "emptyModalDurationMs": 2000
+  }
+}

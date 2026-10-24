@@ -1,0 +1,11 @@
+{
+  "name": "magic-choice-wheel",
+  "private": true,
+  "scripts": {
+    "test": "PLAYWRIGHT_BROWSERS_PATH=0 playwright test",
+    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=0 playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "content": {
+    "pageTitle": "Test Wheel",
+    "title": "test wheel",
+    "subtitle": "debug config",
+    "spinButtonLabel": "spin",
+    "emptyStateTitle": "DONE"
+  },
+  "theme": {
+    "background": "#f6f5ef",
+    "primaryLight": "#5c7cfa",
+    "primary": "#5c7cfa",
+    "primaryDark": "#364fc7",
+    "textLight": "#ffffff",
+    "textDark": "#495057",
+    "textShell": "#264653",
+    "grayShell": "#264653",
+    "accentLight": "#2a9d8f",
+    "accentDark": "#1d3557",
+    "wheelOpacity": 0.92,
+    "wheelSectorColors": ["#d8f3dc", "#ffe8cc"],
+    "winnerFireworkColors": ["#95d5b2", "#74c69d", "#ffd166"],
+    "buttonFireworkColors": ["#2a9d8f", "#e9c46a", "#f4a261"]
+  },
+  "assets": {
+    "arrowIcon": "./assets/book-club/shell-arrow.svg",
+    "wheelBackgroundImage": "./assets/study-session/wheel-background-image.png",
+    "sideIcons": []
+  },
+  "participants": [
+    {
+      "name": "Анна",
+      "icon": "🧠"
+    },
+    {
+      "name": "Егор",
+      "icon": "✏️"
+    }
+  ],
+  "behavior": {
+    "fullSpins": 1,
+    "spinDurationMs": 50,
+    "mobileSpinDurationMs": 50,
+    "winnerModalDurationMs": 400,
+    "emptyModalDurationMs": 120
+  }
+}

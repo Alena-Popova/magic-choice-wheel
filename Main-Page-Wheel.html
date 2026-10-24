@@ -3,9 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Книжная Рулетка</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="icon" href="./assets/book-club/shells.svg" type="image/svg+xml">
     <link href="https://fonts-online.ru/fonts/unifix-sp" rel="stylesheet">
-
     <style>
         @font-face {
           font-family: 'UnifixSP';
@@ -13,42 +12,57 @@
           font-weight: 400;
           font-style: normal;
         }
+
         :root {
           --background: #e8edef;
           --primary-light: #5393fb;
           --primary: #5393fb;
-          --color-text-light: #fff;
+          --color-text-light: #ffffff;
           --primary-dark: #5393fb;
           --color-text-dark: #8c909d;
           --color-text-shell: #2b211f;
-
           --color-gray-shell: #2b211f;
-          --color-light-violet: #5B71FF;
-          --color-deep-violet: #2B42D4;
+          --color-light-violet: #5b71ff;
+          --color-deep-violet: #2b42d4;
+          --wheel-background-image: none;
+          --spin-duration: 5000ms;
         }
-        * { box-sizing: border-box; }
-        html, body {
-            height: 100%;
+
+        * {
+          box-sizing: border-box;
         }
+
+        html,
+        body {
+          height: 100%;
+        }
+
         body {
           margin: 0;
           background: var(--background);
           font-family: 'UnifixSP', sans-serif;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+
         .page {
-            display: block;
-            align-items: center;
+          display: block;
+          align-items: center;
         }
+
         .title {
-            margin: 20px;
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 60px;
+          margin: 20px;
+          margin-bottom: 60px;
+          text-align: center;
+          font-size: 2rem;
         }
+
+        .title-primary {
+          color: var(--color-deep-violet);
+        }
+
+        .title-secondary {
+          color: var(--color-light-violet);
+        }
+
         .wrapper {
           display: flex;
           flex-wrap: wrap;
@@ -57,120 +71,166 @@
           padding-top: 2rem;
           user-select: none;
         }
+
         #rouletteContainer {
           position: relative;
           width: 600px;
           height: 600px;
-          border-radius: 50%;
           margin: 0 auto;
           overflow: visible;
           border: 3px solid var(--color-light-violet);
-          background-image: url('./wheel-background-image.svg');
-          background-size: cover;         /* ✅ заполняет весь круг */
-          background-position: center;    /* ✅ центрирует */
-          background-repeat: no-repeat;   /* ✅ без повторов */
+          border-radius: 50%;
+          background-image: var(--wheel-background-image);
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
         }
+
         #rouletteContainer::before {
           content: '';
           position: absolute;
-          inset: -12px; /* расстояние от внешнего края */
-          border-radius: 50%;
+          inset: -12px;
           border: 3px solid var(--color-light-violet);
+          border-radius: 50%;
           pointer-events: none;
         }
+
         #wheel {
-          position: relative;         /* Позволяет позиционировать внутренние элементы относительно колеса */
-          width: 100%;                /* Колесо растягивается на всю ширину контейнера */
-          height: 100%;               /* И по высоте тоже */
-          border-radius: 50%;         /* Делает элемент круглым */
-          transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1); /* Анимация вращения */
-          will-change: transform;     /* Подсказка браузеру оптимизировать вращение (ускорение) */
+          position: relative;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          transition: transform var(--spin-duration) cubic-bezier(0.33, 1, 0.68, 1);
+          will-change: transform;
         }
+
         .sector-label {
           position: absolute;
-          font-weight: bold;
-          font-size: 1.4rem;
-          pointer-events: none;
-          user-select: none;
-          white-space: pre;       /* учитываем переносы \n */
-          text-align: center;     /* имя под эмодзи центрируется */
-          line-height: 1.8;       /* увеличиваем расстояние между строками */
-          /* Пишем вертикально, но убираем направление rtl */
-          writing-mode: vertical-lr;
-          text-orientation: mixed;
-          transform-origin: center center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
           color: var(--color-deep-violet);
+          pointer-events: none;
+          text-align: center;
+          transform-origin: center center;
+          user-select: none;
         }
+
+        .sector-label-name {
+          font-size: 1.25rem;
+          font-weight: bold;
+          line-height: 1.4;
+          text-orientation: mixed;
+          white-space: pre;
+          writing-mode: vertical-lr;
+        }
+
+        .sector-label-icon {
+          font-size: 1.6rem;
+          line-height: 1;
+        }
+
+        .sector-label-image {
+          width: 36px;
+          height: 36px;
+          border: 2px solid rgba(43, 66, 212, 0.2);
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
         #arrow {
-          width: 0;
-          height: 0;
           position: absolute;
           top: -70px;
           left: 50%;
+          width: 0;
+          height: 0;
           margin-left: -50px;
           z-index: 10;
         }
+
         #arrow img {
           width: 100px;
           height: 100px;
+          cursor: pointer;
         }
+
         .side-panel {
-          flex: 1 1 30%;
-          max-width: 400px;
           display: flex;
+          flex: 1 1 30%;
           flex-direction: column;
           gap: 1rem;
           justify-content: flex-start;
           align-items: center;
-          margin: 2rem auto;
+          max-width: 400px;
           min-width: 320px;
+          margin: 2rem auto;
         }
-        #nameInput {
+
+        #sideIcons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
           width: 100%;
-          height: 150px;
-          font-size: 1rem;
-          padding: 1rem;
-          border-radius: 10px;
-          resize: none;
-          margin-bottom: 1.5rem;
-          color: var(--color-text-shell);
-          background: var(--background);
-          border: 3px solid var(--color-light-violet);
-          font-family: 'UnifixSP', sans-serif;
         }
+
+        .side-icon {
+          width: 200px;
+          max-width: calc(50% - 4px);
+        }
+
+        #nameInput {
+          width: 408px;
+          max-width: 100%;
+          height: 150px;
+          margin-bottom: 1.5rem;
+          padding: 1rem;
+          resize: none;
+          border: 3px solid var(--color-light-violet);
+          border-radius: 10px;
+          background: var(--background);
+          color: var(--color-text-shell);
+          font-family: 'UnifixSP', sans-serif;
+          font-size: 1rem;
+        }
+
         #spinBtn {
           position: relative;
+          z-index: 0;
+          width: 100%;
           padding: 1rem 2rem;
-          font-size: 1.5rem;
+          overflow: visible;
           border: none;
           border-radius: 12px;
-          cursor: pointer;
-          width: 100%;
-          overflow: visible;
-          transition: transform 0.2s ease, box-shadow 0.3s ease;
-          z-index: 0;
-          user-select: none;
-          color: var(--background);
           background: var(--color-light-violet);
+          color: var(--background);
+          cursor: pointer;
           font-family: 'UnifixSP', sans-serif;
+          font-size: 1.5rem;
+          transition: transform 0.2s ease, box-shadow 0.3s ease;
+          user-select: none;
         }
+
         #spinBtn:hover {
           transform: scale(1.05);
         }
+
         #spinBtn:active {
           transform: scale(0.95);
         }
-        /* Анимация фейерверка кнопки */
+
         .btn-firework {
           position: absolute;
+          z-index: 10;
           border-radius: 50%;
-          pointer-events: none;
+          background-color: var(--primary-dark);
           animation: btnExplode 800ms ease-out forwards;
           opacity: 1;
+          pointer-events: none;
           will-change: transform, opacity;
-          z-index: 10;
-          background-color: var(--primary-dark);
         }
+
         @keyframes btnExplode {
           0% {
             transform: scale(1);
@@ -181,16 +241,17 @@
             opacity: 0;
           }
         }
-        /* Фейерверки после выигрыша */
+
         .firework {
           position: fixed;
+          z-index: 9999;
           border-radius: 50%;
-          pointer-events: none;
           animation: explode 1s ease-out forwards;
           opacity: 1;
-          z-index: 9999;
+          pointer-events: none;
           will-change: transform, opacity;
         }
+
         @keyframes explode {
           0% {
             transform: scale(1);
@@ -201,23 +262,27 @@
             opacity: 0;
           }
         }
+
         .modal {
           position: fixed;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
-          background: rgba(0, 0, 0, 0.9);
-          display: flex;
+          top: 0;
+          left: 0;
+          display: none;
+          z-index: 9999;
+          width: 100%;
+          height: 100%;
           justify-content: center;
           align-items: center;
           flex-direction: column;
-          z-index: 9999;
-          display: none;
+          background: rgba(0, 0, 0, 0.9);
         }
+
         .modal h2 {
-          font-size: 3rem;
           margin-bottom: 1rem;
           color: var(--color-text-dark);
+          font-size: 3rem;
         }
+
         .modal img {
           width: 400px;
           max-width: 90%;
@@ -225,312 +290,732 @@
           border: 5px solid var(--color-text-dark);
           border-radius: 15px;
         }
+
+        .fatal-error {
+          max-width: 700px;
+          margin: 10vh auto;
+          padding: 24px;
+          border: 3px solid var(--color-light-violet);
+          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.8);
+          color: var(--color-deep-violet);
+          text-align: center;
+          line-height: 1.5;
+        }
+
+        .fatal-error code {
+          display: inline-block;
+          margin-top: 8px;
+          padding: 4px 8px;
+          border-radius: 8px;
+          background: rgba(91, 113, 255, 0.12);
+        }
+
         @media (max-width: 768px) {
           .wrapper {
             flex-direction: column;
             align-items: center;
           }
-          #rouletteContainer, .side-panel {
+
+          #rouletteContainer,
+          .side-panel {
             width: 100%;
             max-width: 100%;
           }
+
           #rouletteContainer {
-            height: 90vw;
             width: 90vw;
+            height: 90vw;
           }
-          #wheel {
-            transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+
+          .sector-label-name {
+            font-size: 1rem;
           }
         }
-
-        .container-one-by-one-row {
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         gap: 8px;
-       }
     </style>
 </head>
 <body>
 <div class="page">
     <div class="title">
-        <div style="color: var(--color-deep-violet);">
-            book club
-        </div>
-        <div style="color: var(--color-light-violet);">
-            what do seashells sing about
-        </div>
+        <div class="title-primary" id="pageTitlePrimary"></div>
+        <div class="title-secondary" id="pageTitleSecondary"></div>
     </div>
     <div class="wrapper">
         <div id="rouletteContainer">
             <div id="arrow">
-                <img id="reloadWheel" src="./shell-arrow.svg" />
+                <img id="reloadWheel" src="" alt="Обновить колесо">
             </div>
             <div id="wheel"></div>
         </div>
         <div class="side-panel">
-            <div class="container-one-by-one-row">
-                <div>
-                    <img style="width: 200px;" src="./shells.svg" />
-                </div>
-                <div>
-                    <img style="width: 200px;" src="./shells.svg" />
-                </div>
-            </div>
-        <textarea style="width: 408px;" id="nameInput">
-        Анастасия
-        Диана
-        Мария MariKo
-        Тимофей
-        Светлана
-        </textarea>
-        <button id="spinBtn">go go go</button>
+            <div id="sideIcons"></div>
+            <textarea id="nameInput"></textarea>
+            <button id="spinBtn" type="button"></button>
         </div>
     </div>
-    <div class="modal" id="winnerModal" style="display: none;">
-        <h2 id="winnerName">Алена</h2>
-        <img id="winnerGif"
-             src="https://media3.giphy.com/media/v1.Y2lkPTlhMmQ0YjA4cmNoajA1aGN6bXMwNHc4aDFlbTJybmh1aDAyeTN0NG5ucGV1eHR6eiZlcD12MV9naWZzX3JhbmRvbSZjdD1n/JSXQ5I5o5ET5nerztu/giphy.gif"
-             alt="GIF" style="opacity: 1;">
+    <div class="modal" id="winnerModal">
+        <h2 id="winnerName"></h2>
+        <img id="winnerGif" src="" alt="Картинка победителя">
     </div>
     <div class="modal" id="emptyModal">
-        <h2>🎊 ВСЁ! 🎊</h2>
+        <h2 id="emptyModalTitle"></h2>
     </div>
     <audio id="spinSound" src="https://cdn.freesound.org/previews/59/59194_745228-lq.mp3"></audio>
 </div>
+
 <script>
-    $(function() {
-      // ====================== КОНСТАНТЫ ======================
-      const EMOJIS = [
-        '📚','📖','🕮','📜','✒️','🖋️','📔','📘','📙','📗',
-        '📓','📒','📑','🔖','🪶','🕯️','☕','🍵','📎','✉️',
-        '💭','🌙','⭐','🪄','🧠','💡','🎇','🪞','🕰️','🏛️',
-        '🌿','🍂','🌸','🪶','📇','🗝️','📦','📷','🎵','🗒️'
+    (function () {
+      const DEFAULT_EMOJIS = [
+        '📚', '📖', '🕮', '📜', '✒️', '🖋️', '📔', '📘', '📙', '📗',
+        '📓', '📒', '📑', '🔖', '🪶', '🕯️', '☕', '🍵', '📎', '✉️',
+        '💭', '🌙', '⭐', '🪄', '🧠', '💡', '🎇', '🪞', '🕰️', '🏛️',
+        '🌿', '🍂', '🌸', '📇', '🗝️', '📦', '📷', '🎵', '🗒️'
       ];
-      const BASE_COLORS = ['#a020f0','#ff0066','#ff8c00','#00bfff','#00ff7f','#ff4500','#9acd32','#ff1493'];
-      const DEFAULT_GIF = 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif';
-      const MAX_GIFS = 3; // сколько гифок держим в кеше
 
-      // ====================== DOM ЭЛЕМЕНТЫ ======================
-      const $wheel = $('#wheel');
-      const $spinBtn = $('#spinBtn');
-      const $reloadWheel = $('#reloadWheel');
-      const nameInput = document.getElementById('nameInput');
-      const modal = document.getElementById('winnerModal');
-      const emptyModal = document.getElementById('emptyModal');
-      const winnerNameEl = document.getElementById('winnerName');
-      const winnerGif = document.getElementById('winnerGif');
-      const spinSound = document.getElementById('spinSound');
-      const autoSpin = document.getElementById('autoSpin');
-      const toggleSettings = document.getElementById('toggleSettingsBtn');
-      const GIF_COUNT = 34; // 👉 тут укажи реальное количество гифок
-      const GIF_PATH = './gifs/';
-      // ====================== ПЕРЕМЕННЫЕ ======================
-      let currentNames = [];
-      let isSpinning = false;
-      let currentRotation = 0;
-      let fixedAngleStep = 0;
-      let unusedIndexes = [];
+      const DEFAULT_WINNER_IMAGES = Array.from(
+        { length: 34 },
+        (_, index) => `./gifs/${index + 1}.gif`
+      );
+      const DEBUG_PING_PATH = './debug-ping.txt';
 
-      // для кеширования гифок
-      const preloadedGifs = []; // содержит объекты Image
-      let preloadingInProgress = false;
+      window.addEventListener('error', (event) => {
+        debugLog('window-error', {
+          message: event.message,
+          source: event.filename,
+          line: event.lineno,
+          column: event.colno
+        }, 'error');
+      });
 
-      // ====================== ФУНКЦИИ: УЧАСТНИКИ ======================
-      function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
+      window.addEventListener('unhandledrejection', (event) => {
+        debugLog('unhandled-rejection', {
+          reason: describeDebugValue(event.reason)
+        }, 'error');
+      });
+
+      bootstrap();
+
+      async function bootstrap() {
+        try {
+          const configPath = getConfigPath();
+          debugLog('bootstrap-start', { configPath });
+          const rawConfig = await loadJsonConfig(configPath);
+          debugLog('config-loaded', {
+            configPath,
+            participantCount: Array.isArray(rawConfig.participants) ? rawConfig.participants.length : 0
+          });
+          startApp(rawConfig);
+        } catch (error) {
+          debugLog('bootstrap-error', {
+            message: error instanceof Error ? error.message : String(error)
+          }, 'error');
+          showFatalError(error instanceof Error ? error.message : String(error));
         }
-        return array;
       }
 
-      function getColors(count) {
-        const pastelPalette = [
-            '#f8d7da', // розовый
-            '#fde2b8', // персиковый
-            '#fff9c4', // лимонный крем
-            '#d7f9ee', // мятный
-            '#d6eaff', // нежно-голубой
-            '#e4d7f9', // сиреневый
-            '#f5e6cc', // песочный
-            '#ffe4ec', // розовый чай
-            '#e8f5e9', // светло-зелёный
-        ];
-        return Array.from({ length: count }, (_, i) => pastelPalette[i % pastelPalette.length]);
+      function getConfigPath() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('config') || './wheel-config.json';
       }
 
-      function buildGradient(colors) {
-        const step = 360 / colors.length;
-        return `conic-gradient(${colors.map((c,i)=>`${c} ${step*i}deg ${step*(i+1)}deg`).join(', ')})`;
+      async function loadJsonConfig(path) {
+        if (window.location.protocol === 'file:') {
+          throw new Error(
+            'JSON-конфиг нельзя загрузить из file://. Открой страницу через локальный сервер, например: python3 -m http.server 8123'
+          );
+        }
+
+        const response = await fetch(path, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`Не удалось загрузить конфиг: ${path}`);
+        }
+
+        return response.json();
       }
 
-      function renderLabels(names) {
-        $wheel.find('.sector-label').remove();
-        if (!names || !names.length) return;
+      function showFatalError(message) {
+        debugLog('fatal-error-shown', { message }, 'error');
+        document.title = 'Ошибка конфигурации';
+        document.body.innerHTML = `
+          <div class="fatal-error">
+            <h1>Конфиг не загрузился</h1>
+            <div>${escapeHtml(message)}</div>
+            <code>?config=wheel-config-study-session.json</code>
+          </div>
+        `;
+      }
 
-        const step = 360 / names.length;
-        const outerRadius = $wheel.width() / 2;
-        const labelRadius = outerRadius * 0.8;
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
 
-        names.forEach((name,i)=>{
-          const angle = step*i + step/2;
-          const rad = (angle-90)*Math.PI/180;
-          const x = outerRadius + labelRadius * Math.cos(rad);
-          const y = outerRadius + labelRadius * Math.sin(rad);
-          const emoji = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-          $('<div class="sector-label"></div>')
-            .text(`${emoji}\n${name}`)
-            .css({top: y+'px', left: x+'px', transform: `translate(-50%,-50%) rotate(${angle-90}deg)`})
-            .appendTo($wheel);
+      function startApp(rawConfig) {
+        const config = normalizeConfig(rawConfig);
+        const participantDirectory = new Map(config.participants.map((participant) => [participant.name, participant]));
+
+        const wheel = document.getElementById('wheel');
+        const rouletteContainer = document.getElementById('rouletteContainer');
+        const reloadWheel = document.getElementById('reloadWheel');
+        const sideIcons = document.getElementById('sideIcons');
+        const nameInput = document.getElementById('nameInput');
+        const spinBtn = document.getElementById('spinBtn');
+        const modal = document.getElementById('winnerModal');
+        const emptyModal = document.getElementById('emptyModal');
+        const emptyModalTitle = document.getElementById('emptyModalTitle');
+        const winnerNameEl = document.getElementById('winnerName');
+        const winnerGif = document.getElementById('winnerGif');
+        const spinSound = document.getElementById('spinSound');
+        const titlePrimary = document.getElementById('pageTitlePrimary');
+        const titleSecondary = document.getElementById('pageTitleSecondary');
+
+        let currentNames = [];
+        let currentRotation = 0;
+        let fixedAngleStep = 0;
+        let isSpinning = false;
+        let unusedWinnerImageIndexes = [];
+
+        debugLog('app-started', {
+          pageTitle: config.content.pageTitle,
+          participantCount: config.participants.length,
+          sideIconCount: config.assets.sideIcons.length
         });
-      }
 
-      function updateWheel() {
-        currentNames = nameInput.value.split('\n').map(n => n.trim()).filter(n => n);
-        if (!currentNames.length) {
-          $wheel.css('background','none');
-          $wheel.find('.sector-label').remove();
-          return;
-        }
-        $wheel.css('background', buildGradient(getColors(currentNames.length)));
-        $wheel.css('opacity', '0.9');
-        renderLabels(currentNames);
-      }
+        applyTheme(config.theme);
+        applyStaticContent(config);
+        updateWheel();
 
-      // ====================== ФУНКЦИИ: ПОДГРУЗКА GIF (CACHE) ======================
-
-      // Берёт следующую гифку из очереди; запускает подгрузку ещё одной, если нужно.
-      function getNextGif() {
-        // если все гифки уже использованы, сбрасываем список
-        if (unusedIndexes.length === 0) {
-          unusedIndexes = Array.from({ length: GIF_COUNT }, (_, i) => i + 1);
-        }
-
-        // выбираем случайный индекс
-        const randomIndex = Math.floor(Math.random() * unusedIndexes.length);
-        const gifNumber = unusedIndexes.splice(randomIndex, 1)[0]; // удаляем, чтобы не повторялся
-
-        return `${GIF_PATH}${gifNumber}.gif`;
-      }
-
-      // ====================== ФУНКЦИИ: МОДАЛЬНЫЕ ОКНА ======================
-      function showModal(name) {
-        winnerNameEl.textContent = name;
-        modal.style.display = 'flex';
-
-        // Берём готовую гифку из кеша (если есть) — это мгновенно (img.src уже задан)
-        const gifUrl = getNextGif();
-        winnerGif.src = gifUrl;
-        winnerGif.style.opacity = 1;
-
-        setTimeout(() => { modal.style.display = 'none'; }, 7000);
-      }
-
-      // ====================== ФУНКЦИИ: ВРАЩЕНИЕ ======================
-      function getWinnerIndex() {
-        const step = 360 / currentNames.length;
-        const normalized = (currentRotation % 360 + 360) % 360;
-        return Math.floor(((360 - normalized) % 360) / step);
-      }
-
-      function launchFireworks() {
-        const colors = [
-          '#F9E0AE', // тёплый песочный
-          '#F4BFBF', // розовый дым
-          '#FFD6A5', // персик
-          '#FFF7AE', // ваниль
-          '#C8E3D4', // мятный
-          '#AEE1E1', // морская пена
-          '#BFD7ED', // голубой туман
-          '#E5C1CD', // пудрово-розовый
-          '#D2DAFF', // лаванда
-          '#FFFFFF'  // белый акцент
-        ];
-        for (let i = 0; i < 10; i++) {
-          const fw = document.createElement('div');
-          fw.className = 'firework';
-          const size = 4 + Math.random() * 6;
-          fw.style.cssText = `width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};top:${Math.random()*window.innerHeight}px;left:${Math.random()*window.innerWidth}px;--tx:${Math.random()*200-100}px;--ty:${Math.random()*200-100}px;`;
-          document.body.appendChild(fw);
-          setTimeout(()=>fw.remove(), 1000);
-        }
-      }
-
-      function launchButtonFireworks() {
-        const colors = ['gold','orange','yellow','red'];
-        const rect = $spinBtn[0].getBoundingClientRect();
-        for (let i = 0; i < 6; i++) {
-          const fw = document.createElement('div');
-          fw.className = 'btn-firework';
-          const size = 6 + Math.random() * 6;
-          const angle = (360/6) * i;
-          const radius = 50 + Math.random() * 10;
-          const rad = (angle * Math.PI) / 180;
-          const tx = Math.cos(rad) * radius + (Math.random() * 20 - 10);
-          const ty = Math.sin(rad) * radius + (Math.random() * 20 - 10);
-          fw.style.cssText = `width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};position:fixed;left:${rect.left+rect.width/2}px;top:${rect.top+rect.height/2}px;--tx:${tx}px;--ty:${ty}px;`;
-          document.body.appendChild(fw);
-          setTimeout(()=>fw.remove(), 800);
-        }
-      }
-
-      function spinWheel() {
-        if (isSpinning) return;
-        currentNames = nameInput.value.split('\n').map(n => n.trim()).filter(n => n);
-        if (!currentNames.length) {
-          emptyModal.style.display = 'flex';
-          setTimeout(()=>emptyModal.style.display='none', 2000);
-          return;
-        }
-
-        isSpinning = true;
-        const step = 360 / currentNames.length;
-        fixedAngleStep = (fixedAngleStep + 1) % currentNames.length;
-        const spins = 5;
-        const targetRotation = spins * 360 + (360 - fixedAngleStep * step - step/2);
-
-        launchButtonFireworks();
-        spinSound.currentTime = 0;
-        spinSound.play();
-        $wheel.css({transition:'transform 5s cubic-bezier(0.33,1,0.68,1)', transform: `rotate(${targetRotation}deg)`});
-
-        $wheel.one('transitionend', ()=>{
-          currentRotation = targetRotation % 360;
-          const winnerIndex = getWinnerIndex();
-          if (winnerIndex !== -1) {
-            const winner = currentNames[winnerIndex];
-            launchFireworks();
-            currentNames.splice(winnerIndex, 1);
-            nameInput.value = currentNames.join('\n');
-            updateWheel();
-            spinSound.pause();
-
-            // Показ модалки — берём гифку из кеша
-            showModal(winner);
+        spinBtn.addEventListener('click', () => {
+          debugLog('spin-button-clicked', {
+            namesInTextarea: getNamesFromInput().length,
+            isSpinning
+          });
+          spinWheel();
+        });
+        reloadWheel.addEventListener('click', () => {
+          debugLog('reload-wheel-clicked', {
+            namesInTextarea: getNamesFromInput().length
+          });
+          updateWheel();
+        });
+        nameInput.addEventListener('input', updateWheel);
+        modal.addEventListener('click', () => {
+          debugLog('winner-modal-closed');
+          modal.style.display = 'none';
+        });
+        emptyModal.addEventListener('click', () => {
+          debugLog('empty-modal-closed');
+          emptyModal.style.display = 'none';
+        });
+        window.addEventListener('resize', () => {
+          if (currentNames.length) {
+            renderLabels(currentNames);
           }
-          isSpinning = false;
-          $wheel.css({transition:'none', transform: `rotate(${currentRotation}deg)`});
         });
+
+        function applyTheme(theme) {
+          const root = document.documentElement;
+          root.style.setProperty('--background', theme.background);
+          root.style.setProperty('--primary-light', theme.primaryLight);
+          root.style.setProperty('--primary', theme.primary);
+          root.style.setProperty('--primary-dark', theme.primaryDark);
+          root.style.setProperty('--color-text-light', theme.textLight);
+          root.style.setProperty('--color-text-dark', theme.textDark);
+          root.style.setProperty('--color-text-shell', theme.textShell);
+          root.style.setProperty('--color-gray-shell', theme.grayShell);
+          root.style.setProperty('--color-light-violet', theme.accentLight);
+          root.style.setProperty('--color-deep-violet', theme.accentDark);
+          root.style.setProperty('--wheel-background-image', `url("${escapeUrl(config.assets.wheelBackgroundImage)}")`);
+          root.style.setProperty('--spin-duration', `${config.behavior.spinDurationMs}ms`);
+        }
+
+        function applyStaticContent(currentConfig) {
+          document.title = currentConfig.content.pageTitle;
+          titlePrimary.textContent = currentConfig.content.title;
+          titleSecondary.textContent = currentConfig.content.subtitle;
+          spinBtn.textContent = currentConfig.content.spinButtonLabel;
+          emptyModalTitle.textContent = currentConfig.content.emptyStateTitle;
+          reloadWheel.src = currentConfig.assets.arrowIcon;
+          rouletteContainer.style.backgroundImage = `url("${escapeUrl(currentConfig.assets.wheelBackgroundImage)}")`;
+
+          sideIcons.innerHTML = '';
+          currentConfig.assets.sideIcons.forEach((iconPath, index) => {
+            const img = document.createElement('img');
+            img.className = 'side-icon';
+            img.src = iconPath;
+            img.alt = `Иконка ${index + 1}`;
+            sideIcons.appendChild(img);
+          });
+
+          nameInput.value = currentConfig.participants.map((participant) => participant.name).join('\n');
+          debugLog('static-content-applied', {
+            title: currentConfig.content.title,
+            subtitle: currentConfig.content.subtitle,
+            participantCount: currentConfig.participants.length
+          });
+        }
+
+        function getNamesFromInput() {
+          return nameInput.value
+            .split('\n')
+            .map((name) => name.trim())
+            .filter(Boolean);
+        }
+
+        function getSectorColors(count) {
+          return Array.from(
+            { length: count },
+            (_, index) => config.theme.wheelSectorColors[index % config.theme.wheelSectorColors.length]
+          );
+        }
+
+        function buildGradient(colors) {
+          const step = 360 / colors.length;
+          return `conic-gradient(${colors.map((color, index) => (
+            `${color} ${step * index}deg ${step * (index + 1)}deg`
+          )).join(', ')})`;
+        }
+
+        function updateWheel() {
+          currentNames = getNamesFromInput();
+
+          if (!currentNames.length) {
+            wheel.style.background = 'none';
+            wheel.innerHTML = '';
+            debugLog('wheel-cleared-no-names');
+            return;
+          }
+
+          wheel.style.background = buildGradient(getSectorColors(currentNames.length));
+          wheel.style.opacity = String(config.theme.wheelOpacity);
+          renderLabels(currentNames);
+          debugLog('wheel-updated', {
+            participantCount: currentNames.length
+          });
+        }
+
+        function renderLabels(names) {
+          wheel.innerHTML = '';
+
+          if (!names.length) {
+            return;
+          }
+
+          const step = 360 / names.length;
+          const outerRadius = wheel.clientWidth / 2;
+          const labelRadius = outerRadius * 0.8;
+
+          names.forEach((name, index) => {
+            const angle = step * index + step / 2;
+            const radian = (angle - 90) * Math.PI / 180;
+            const x = outerRadius + labelRadius * Math.cos(radian);
+            const y = outerRadius + labelRadius * Math.sin(radian);
+            const participant = participantDirectory.get(name);
+            const iconValue = participant && participant.icon ? participant.icon : DEFAULT_EMOJIS[index % DEFAULT_EMOJIS.length];
+            const label = document.createElement('div');
+            const nameNode = document.createElement('span');
+
+            label.className = 'sector-label';
+            label.style.top = `${y}px`;
+            label.style.left = `${x}px`;
+            label.style.transform = `translate(-50%, -50%) rotate(${angle - 90}deg)`;
+
+            if (looksLikeImage(iconValue)) {
+              const iconImage = document.createElement('img');
+              iconImage.className = 'sector-label-image';
+              iconImage.src = iconValue;
+              iconImage.alt = name;
+              label.appendChild(iconImage);
+            } else {
+              const iconNode = document.createElement('span');
+              iconNode.className = 'sector-label-icon';
+              iconNode.textContent = iconValue;
+              label.appendChild(iconNode);
+            }
+
+            nameNode.className = 'sector-label-name';
+            nameNode.textContent = name;
+            label.appendChild(nameNode);
+            wheel.appendChild(label);
+          });
+        }
+
+        function getWinnerIndex() {
+          const step = 360 / currentNames.length;
+          const normalized = (currentRotation % 360 + 360) % 360;
+          return Math.floor(((360 - normalized) % 360) / step);
+        }
+
+        function getWinnerImage() {
+          const fallbackImages = config.assets.fallbackWinnerImages;
+          if (!fallbackImages.length) {
+            return '';
+          }
+
+          if (!unusedWinnerImageIndexes.length) {
+            unusedWinnerImageIndexes = Array.from({ length: fallbackImages.length }, (_, index) => index);
+          }
+
+          const randomIndex = Math.floor(Math.random() * unusedWinnerImageIndexes.length);
+          const fallbackIndex = unusedWinnerImageIndexes.splice(randomIndex, 1)[0];
+          return fallbackImages[fallbackIndex];
+        }
+
+        function showModal(name) {
+          const winnerImage = getWinnerImage();
+          winnerNameEl.textContent = name;
+          winnerGif.src = winnerImage;
+          winnerGif.style.display = winnerImage ? 'block' : 'none';
+          modal.style.display = 'flex';
+          debugLog('winner-modal-opened', {
+            winner: name,
+            winnerImage
+          });
+
+          window.setTimeout(() => {
+            modal.style.display = 'none';
+          }, config.behavior.winnerModalDurationMs);
+        }
+
+        function launchFireworks() {
+          for (let index = 0; index < 10; index += 1) {
+            const firework = document.createElement('div');
+            const size = 4 + Math.random() * 6;
+            const colorIndex = Math.floor(Math.random() * config.theme.winnerFireworkColors.length);
+
+            firework.className = 'firework';
+            firework.style.cssText = [
+              `width:${size}px`,
+              `height:${size}px`,
+              `background:${config.theme.winnerFireworkColors[colorIndex]}`,
+              `top:${Math.random() * window.innerHeight}px`,
+              `left:${Math.random() * window.innerWidth}px`,
+              `--tx:${Math.random() * 200 - 100}px`,
+              `--ty:${Math.random() * 200 - 100}px`
+            ].join(';');
+
+            document.body.appendChild(firework);
+            window.setTimeout(() => firework.remove(), 1000);
+          }
+        }
+
+        function launchButtonFireworks() {
+          const rect = spinBtn.getBoundingClientRect();
+
+          for (let index = 0; index < 6; index += 1) {
+            const firework = document.createElement('div');
+            const size = 6 + Math.random() * 6;
+            const angle = (360 / 6) * index;
+            const radius = 50 + Math.random() * 10;
+            const radian = angle * Math.PI / 180;
+            const tx = Math.cos(radian) * radius + (Math.random() * 20 - 10);
+            const ty = Math.sin(radian) * radius + (Math.random() * 20 - 10);
+            const colorIndex = Math.floor(Math.random() * config.theme.buttonFireworkColors.length);
+
+            firework.className = 'btn-firework';
+            firework.style.cssText = [
+              `width:${size}px`,
+              `height:${size}px`,
+              `background:${config.theme.buttonFireworkColors[colorIndex]}`,
+              'position:fixed',
+              `left:${rect.left + rect.width / 2}px`,
+              `top:${rect.top + rect.height / 2}px`,
+              `--tx:${tx}px`,
+              `--ty:${ty}px`
+            ].join(';');
+
+            document.body.appendChild(firework);
+            window.setTimeout(() => firework.remove(), 800);
+          }
+        }
+
+        function spinWheel() {
+          debugLog('spin-requested', {
+            isSpinning,
+            namesInTextarea: getNamesFromInput().length
+          });
+
+          if (isSpinning) {
+            debugLog('spin-ignored-already-spinning');
+            return;
+          }
+
+          currentNames = getNamesFromInput();
+          if (!currentNames.length) {
+            emptyModal.style.display = 'flex';
+            debugLog('spin-blocked-no-names');
+            window.setTimeout(() => {
+              emptyModal.style.display = 'none';
+            }, config.behavior.emptyModalDurationMs);
+            return;
+          }
+
+          isSpinning = true;
+          const step = 360 / currentNames.length;
+          const duration = window.innerWidth <= 768
+            ? config.behavior.mobileSpinDurationMs
+            : config.behavior.spinDurationMs;
+
+          fixedAngleStep = (fixedAngleStep + 1) % currentNames.length;
+
+          const targetRotation = config.behavior.fullSpins * 360
+            + (360 - fixedAngleStep * step - step / 2);
+
+          debugLog('spin-started', {
+            currentNamesCount: currentNames.length,
+            step,
+            duration,
+            fixedAngleStep,
+            targetRotation
+          });
+
+          document.documentElement.style.setProperty('--spin-duration', `${duration}ms`);
+          launchButtonFireworks();
+          spinSound.currentTime = 0;
+          spinSound.play().catch(() => {});
+          wheel.style.transition = `transform ${duration}ms cubic-bezier(0.33, 1, 0.68, 1)`;
+          wheel.style.transform = `rotate(${targetRotation}deg)`;
+
+          const onTransitionEnd = () => {
+            wheel.removeEventListener('transitionend', onTransitionEnd);
+            currentRotation = targetRotation % 360;
+
+            const winnerIndex = getWinnerIndex();
+            if (winnerIndex !== -1) {
+              const winner = currentNames[winnerIndex];
+              debugLog('winner-selected', {
+                winner,
+                winnerIndex,
+                namesBeforeRemoval: currentNames.length
+              });
+              launchFireworks();
+              currentNames.splice(winnerIndex, 1);
+              nameInput.value = currentNames.join('\n');
+              updateWheel();
+              spinSound.pause();
+              showModal(winner);
+            }
+
+            isSpinning = false;
+            wheel.style.transition = 'none';
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+            debugLog('spin-finished', {
+              currentRotation,
+              remainingNames: currentNames.length
+            });
+          };
+
+          wheel.addEventListener('transitionend', onTransitionEnd);
+        }
       }
 
-      // ====================== ОБРАБОТЧИКИ СОБЫТИЙ ======================
-      $spinBtn.on('click', spinWheel);
-      $reloadWheel.on('click', updateWheel);
-      modal.addEventListener('click', ()=> modal.style.display = 'none');
-      emptyModal.addEventListener('click', ()=> emptyModal.style.display = 'none');
+      function debugLog(eventName, details, level) {
+        const logLevel = level || 'log';
+        const payload = details || {};
 
-      // ====================== ИНИЦИАЛИЗАЦИЯ ======================
-      // Перемешиваем начальный список
-      const shuffledNames = shuffleArray(nameInput.value.split('\n').map(n => n.trim()).filter(n => n));
-      nameInput.value = shuffledNames.join('\n');
+        if (typeof console[logLevel] === 'function') {
+          console[logLevel](`[wheel] ${eventName}`, payload);
+        } else {
+          console.log(`[wheel] ${eventName}`, payload);
+        }
 
-      // Настраиваем круг и wheel
-      updateWheel();
+        sendDebugPing(eventName, payload, logLevel);
+      }
 
-      // Подгружаем несколько гифок заранее (если есть участники)
-      currentNames = nameInput.value.split('\n').map(n => n.trim()).filter(n => n);
-    });
+      function sendDebugPing(eventName, details, level) {
+        try {
+          const params = new URLSearchParams({
+            ts: new Date().toISOString(),
+            level: level || 'log',
+            event: eventName
+          });
+
+          Object.entries(details || {}).forEach(([key, value]) => {
+            params.set(key, describeDebugValue(value));
+          });
+
+          fetch(`${DEBUG_PING_PATH}?${params.toString()}`, {
+            cache: 'no-store'
+          }).catch(() => {});
+        } catch (error) {
+          console.error('[wheel] debug-ping-failed', error);
+        }
+      }
+
+      function describeDebugValue(value) {
+        if (value === null || value === undefined) {
+          return String(value);
+        }
+
+        if (typeof value === 'object') {
+          try {
+            return JSON.stringify(value).slice(0, 200);
+          } catch (error) {
+            return '[unserializable-object]';
+          }
+        }
+
+        return String(value).slice(0, 200);
+      }
+
+      function normalizeConfig(inputConfig) {
+        const normalizedParticipants = Array.isArray(inputConfig.participants) && inputConfig.participants.length
+          ? inputConfig.participants
+              .map(normalizeParticipant)
+              .filter(Boolean)
+          : [
+              normalizeParticipant({ name: 'Анастасия', icon: '📚' }),
+              normalizeParticipant({ name: 'Диана', icon: '🌊' }),
+              normalizeParticipant({ name: 'Мария MariKo', icon: '🐚' }),
+              normalizeParticipant({ name: 'Тимофей', icon: '⭐' }),
+              normalizeParticipant({ name: 'Светлана', icon: '🪄' })
+            ];
+
+        return {
+          content: {
+            pageTitle: getString(inputConfig.content && inputConfig.content.pageTitle, 'Книжная Рулетка'),
+            title: getString(inputConfig.content && inputConfig.content.title, 'book club'),
+            subtitle: getString(inputConfig.content && inputConfig.content.subtitle, 'what do seashells sing about'),
+            spinButtonLabel: getString(inputConfig.content && inputConfig.content.spinButtonLabel, 'go go go'),
+            emptyStateTitle: getString(inputConfig.content && inputConfig.content.emptyStateTitle, '🎊 ВСЁ! 🎊')
+          },
+          theme: {
+            background: getString(inputConfig.theme && inputConfig.theme.background, '#e8edef'),
+            primaryLight: getString(inputConfig.theme && inputConfig.theme.primaryLight, '#5393fb'),
+            primary: getString(inputConfig.theme && inputConfig.theme.primary, '#5393fb'),
+            primaryDark: getString(inputConfig.theme && inputConfig.theme.primaryDark, '#5393fb'),
+            textLight: getString(inputConfig.theme && inputConfig.theme.textLight, '#ffffff'),
+            textDark: getString(inputConfig.theme && inputConfig.theme.textDark, '#8c909d'),
+            textShell: getString(inputConfig.theme && inputConfig.theme.textShell, '#2b211f'),
+            grayShell: getString(inputConfig.theme && inputConfig.theme.grayShell, '#2b211f'),
+            accentLight: getString(inputConfig.theme && inputConfig.theme.accentLight, '#5b71ff'),
+            accentDark: getString(inputConfig.theme && inputConfig.theme.accentDark, '#2b42d4'),
+            wheelOpacity: typeof inputConfig.theme?.wheelOpacity === 'number'
+              ? inputConfig.theme.wheelOpacity
+              : 0.9,
+            wheelSectorColors: normalizeStringArray(inputConfig.theme && inputConfig.theme.wheelSectorColors, [
+              '#f8d7da',
+              '#fde2b8',
+              '#fff9c4',
+              '#d7f9ee',
+              '#d6eaff',
+              '#e4d7f9',
+              '#f5e6cc',
+              '#ffe4ec',
+              '#e8f5e9'
+            ]),
+            winnerFireworkColors: normalizeStringArray(inputConfig.theme && inputConfig.theme.winnerFireworkColors, [
+              '#F9E0AE',
+              '#F4BFBF',
+              '#FFD6A5',
+              '#FFF7AE',
+              '#C8E3D4',
+              '#AEE1E1',
+              '#BFD7ED',
+              '#E5C1CD',
+              '#D2DAFF',
+              '#FFFFFF'
+            ]),
+            buttonFireworkColors: normalizeStringArray(
+              inputConfig.theme && inputConfig.theme.buttonFireworkColors,
+              ['gold', 'orange', 'yellow', 'red']
+            )
+          },
+          assets: {
+            arrowIcon: getString(inputConfig.assets && inputConfig.assets.arrowIcon, './assets/book-club/shell-arrow.svg'),
+            wheelBackgroundImage: getString(
+              inputConfig.assets && inputConfig.assets.wheelBackgroundImage,
+              './assets/book-club/wheel-background-image.svg'
+            ),
+            sideIcons: normalizeStringArray(
+              inputConfig.assets && inputConfig.assets.sideIcons,
+              ['./assets/book-club/shells.svg', './assets/book-club/shells.svg'],
+              true
+            ),
+            fallbackWinnerImages: normalizeStringArray(
+              inputConfig.assets && inputConfig.assets.fallbackWinnerImages,
+              DEFAULT_WINNER_IMAGES,
+              true
+            )
+          },
+          participants: normalizedParticipants,
+          behavior: {
+            fullSpins: getPositiveNumber(inputConfig.behavior && inputConfig.behavior.fullSpins, 5),
+            spinDurationMs: getPositiveNumber(inputConfig.behavior && inputConfig.behavior.spinDurationMs, 5000),
+            mobileSpinDurationMs: getPositiveNumber(
+              inputConfig.behavior && inputConfig.behavior.mobileSpinDurationMs,
+              3000
+            ),
+            winnerModalDurationMs: getPositiveNumber(
+              inputConfig.behavior && inputConfig.behavior.winnerModalDurationMs,
+              7000
+            ),
+            emptyModalDurationMs: getPositiveNumber(
+              inputConfig.behavior && inputConfig.behavior.emptyModalDurationMs,
+              2000
+            )
+          }
+        };
+      }
+
+      function normalizeParticipant(participant) {
+        if (typeof participant === 'string') {
+          const nameValue = participant.trim();
+          return nameValue ? { name: nameValue, icon: '' } : null;
+        }
+
+        if (!participant || typeof participant !== 'object') {
+          return null;
+        }
+
+        const nameValue = getString(participant.name, '').trim();
+        if (!nameValue) {
+          return null;
+        }
+
+        return {
+          name: nameValue,
+          icon: getString(participant.icon, '')
+        };
+      }
+
+      function normalizeStringArray(value, fallback, allowEmpty) {
+        if (!Array.isArray(value)) {
+          return fallback.slice();
+        }
+
+        const normalized = value
+          .map((item) => getString(item, '').trim())
+          .filter(Boolean);
+
+        if (!normalized.length && !allowEmpty) {
+          return fallback.slice();
+        }
+
+        return normalized;
+      }
+
+      function getString(value, fallback) {
+        return typeof value === 'string' ? value : fallback;
+      }
+
+      function getPositiveNumber(value, fallback) {
+        return typeof value === 'number' && value > 0 ? value : fallback;
+      }
+
+      function escapeUrl(value) {
+        return String(value).replace(/"/g, '&quot;');
+      }
+
+      function looksLikeImage(value) {
+        return /^(https?:\/\/|\.\/|\/|data:image\/|file:\/\/)/i.test(value)
+          || /\.(png|jpe?g|gif|svg|webp)$/i.test(value);
+      }
+     }());
 </script>
 </body>
 </html>

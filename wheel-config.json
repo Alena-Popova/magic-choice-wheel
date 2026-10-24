@@ -1,0 +1,88 @@
+{
+  "content": {
+    "pageTitle": "Книжная Рулетка",
+    "title": "book club",
+    "subtitle": "what do seashells sing about",
+    "spinButtonLabel": "go go go",
+    "emptyStateTitle": "🎊 ВСЁ! 🎊"
+  },
+  "theme": {
+    "background": "#e8edef",
+    "primaryLight": "#5393fb",
+    "primary": "#5393fb",
+    "primaryDark": "#5393fb",
+    "textLight": "#ffffff",
+    "textDark": "#8c909d",
+    "textShell": "#2b211f",
+    "grayShell": "#2b211f",
+    "accentLight": "#5B71FF",
+    "accentDark": "#2B42D4",
+    "wheelOpacity": 0.9,
+    "wheelSectorColors": [
+      "#f8d7da",
+      "#fde2b8",
+      "#fff9c4",
+      "#d7f9ee",
+      "#d6eaff",
+      "#e4d7f9",
+      "#f5e6cc",
+      "#ffe4ec",
+      "#e8f5e9"
+    ],
+    "winnerFireworkColors": [
+      "#F9E0AE",
+      "#F4BFBF",
+      "#FFD6A5",
+      "#FFF7AE",
+      "#C8E3D4",
+      "#AEE1E1",
+      "#BFD7ED",
+      "#E5C1CD",
+      "#D2DAFF",
+      "#FFFFFF"
+    ],
+    "buttonFireworkColors": [
+      "gold",
+      "orange",
+      "yellow",
+      "red"
+    ]
+  },
+  "assets": {
+    "arrowIcon": "./assets/book-club/shell-arrow.svg",
+    "wheelBackgroundImage": "./assets/book-club/wheel-background-image.svg",
+    "sideIcons": [
+      "./assets/book-club/shells.svg",
+      "./assets/book-club/shells.svg"
+    ]
+  },
+  "participants": [
+    {
+      "name": "Анастасия",
+      "icon": "📚"
+    },
+    {
+      "name": "Диана",
+      "icon": "🌊"
+    },
+    {
+      "name": "Мария MariKo",
+      "icon": "🐚"
+    },
+    {
+      "name": "Тимофей",
+      "icon": "⭐"
+    },
+    {
+      "name": "Светлана",
+      "icon": "🪄"
+    }
+  ],
+  "behavior": {
+    "fullSpins": 5,
+    "spinDurationMs": 5000,
+    "mobileSpinDurationMs": 3000,
+    "winnerModalDurationMs": 7000,
+    "emptyModalDurationMs": 2000
+  }
+}
